@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ilocos Sur</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body onload="initializePage()"> <!-- Automatically initialize the page on load -->
+  <div class="province-container">
+    <!-- Left Side: Content -->
+    <div class="province-left">
+      <!-- Back Button -->
+      <div class="province-back-button">
+        <a href="index.html">&#8592;</a>
+      </div>
+
+      <!-- Title & Description -->
+      <div class="province-content">
+        <h2>ILOCOS SUR</h2>
+        <h3 class="province-subtitle">“Where Yesterday Lives in Every Moment”</h3>
+        <p>
+          Ilocos Sur is a timeless tapestry of culture and charm. With its deep
+          respect for history and craftsmanship, the province invites you to
+          slow down and savor tradition. From local arts to age-old practices,
+          everything is woven with care and pride. It’s a living museum with 
+          a heart that still beats strong.
+        </p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="province-tabs">
+        <button onclick="showSection('statistics'); fetchIlocosSurStatistics();" class="active">STATISTICS</button>
+        <button onclick="showSection('language'); fetchIlocosSurLanguage();">LANGUAGE</button>
+        <button onclick="showSection('delicacy'); fetchIlocosSurDelicacies();">DELICACY</button>
+        <button onclick="showSection('tourist'); fetchIlocosSurTouristSpots();">TOURIST SPOT</button>
+      </div>
+
+      <!-- Border under tabs -->
+      <div class="tab-border"></div>
+
+      <!-- SECTIONS -->
+      <div id="statistics" class="statistics-section">
+        <div class="columns">
+          <!-- Municipality Top 3 -->
+          <div class="municipality-stats">
+            <h3>Municipality (Top 3)</h3>
+            <select id="municipalityDropdown" onchange="fetchMunicipalityTop3Dialects(this.value)">
+              <!-- Dynamic dropdown options will be inserted here -->
+            </select>
+            <table id="municipalityTable">
+              <thead>
+                <tr>
+                  <th>Language</th>
+                  <th>Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dynamic rows will be inserted here -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Overall Top 10 -->
+          <div class="overall-stats">
+            <h3>Overall (Top 10)</h3>
+            <table id="overallTable">
+              <thead>
+                <tr>
+                  <th>Language</th>
+                  <th>Percentage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Dynamic rows will be inserted here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="language" class="language-section" style="display: none;">
+        <p>This presents the major languages spoken by the people of Ilocos Sur, gathered from survey data.</p>
+        <div class="table-container">
+          <table id="phraseTable">
+            <thead>
+              <!-- Dynamic header will be inserted here -->
+            </thead>
+            <tbody>
+              <!-- Dynamic rows will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    
+      <div id="delicacy" class="delicacy-section" style="display:none;">
+        <p>These are foods that are famous in this place:</p>
+        <ul class="delicacy-list">
+          <!-- Dynamic list items will be inserted here -->
+        </ul>
+      </div>
+
+      <div id="tourist" class="tourist-section" style="display:none;">
+        <p>These are tourist destinations that are popular in this place:</p>
+        <ul class="tourist-list">
+          <!-- Dynamic list items will be inserted here -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Side: Map -->
+    <div class="ilocos-sur-map-wrapper">
+      <img src="images/ilocosSurMap.png" alt="Map of Ilocos Sur" />
+    </div>
+  </div>
+
+  <!-- Section Toggle Script -->
+  <script>
+    function initializePage() {
+      // Show the statistics section by default
+      showSection('statistics');
+      fetchIlocosSurStatistics();
+    }
+
+    function showSection(sectionId) {
+      const sectionIds = ['statistics', 'language', 'delicacy', 'tourist'];
+      sectionIds.forEach(id => {
+        const section = document.getElementById(id);
+        if (section) {
+          section.style.display = (id === sectionId) ? 'block' : 'none';
+        }
+      });
+
+      const buttons = document.querySelectorAll('.province-tabs button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      const clickedButton = Array.from(buttons).find(btn =>
+        btn.getAttribute('onclick')?.includes(`showSection('${sectionId}')`)
+      );
+      if (clickedButton) {
+        clickedButton.classList.add('active');
+      }
+    }
+  </script>
+
+  <!-- Link to fetcher script -->
+  <script src="js/ilocosSur.js"></script>
+</body>
+</html>
