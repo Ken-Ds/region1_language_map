@@ -1,18 +1,9 @@
 # app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from app.routes import language_routes, dialect_routes, province_routes, municipality_routes, phrase_routes, provincelanguage_routes, municipalitylanguage_routes, delicacy_routes, tourist_spot_routes, statistics_routes
-from flask import Flask, send_from_directory
-
-
-app = Flask(__name__)
-
-@app.route('/')
-def serve_frontend():
-    return send_from_directory('../frontend', 'index.html')
-
-if __name__ == '__main__':
-    app.run()
 
 app = FastAPI(
     title="Language Mapping API",
@@ -28,6 +19,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Serve static files (e.g., your frontend files)
+app.mount("/frontend", StaticFiles(directory="../frontend"), name="frontend")
+
+@app.get("/", response_class=HTMLResponse)
+async def serve_frontend():
+    try:
+        with open("../frontend/index.html") as f:
+            return HTMLResponse(content=f.read())
+    except FileNotFoundError:
+        return HTMLResponse(content="File not found", status_code=404)
 
 # Routes
 app.include_router(dialect_routes.router)
