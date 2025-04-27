@@ -11,10 +11,6 @@ app = Flask(__name__)
 def serve_frontend():
     return send_from_directory('../frontend', 'index.html')
 
-async def serve_frontend():
-    with open("../frontend/index.html") as f:
-        return HTMLResponse(content=f.read())
-
 if __name__ == '__main__':
     app.run()
 
