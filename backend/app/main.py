@@ -1,18 +1,9 @@
-# app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+
 from app.routes import language_routes, dialect_routes, province_routes, municipality_routes, phrase_routes, provincelanguage_routes, municipalitylanguage_routes, delicacy_routes, tourist_spot_routes, statistics_routes
-from flask import Flask, send_from_directory
-
-
-app = Flask(__name__)
-
-@app.route('/')
-def serve_frontend():
-    return send_from_directory('../frontend', 'index.html')
-
-if __name__ == '__main__':
-    app.run()
 
 app = FastAPI(
     title="Language Mapping API",
@@ -29,7 +20,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Routes
+# Serve static files (like your frontend HTML)
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+# Serve the HTML (index.html) at root URL
+@app.get("/", response_class=HTMLResponse)
+async def serve_frontend():
+    with open("frontend/index.html", "r") as f:
+        return HTMLResponse(content=f.read())
+
+# Routes (your existing FastAPI routes)
 app.include_router(dialect_routes.router)
 app.include_router(language_routes.router)
 app.include_router(phrase_routes.router)
